@@ -14,21 +14,12 @@ import cv2
 import numpy as np
 import tensorflow as tf 
 from lib.nets import vgg16
+from dataset.dataset import create_dataset
 
 tf.app.flags.DEFINE_integer('input_size', )
-
-def build_model(image):
-    """
-    Args:
-        params:
-    
-    Returns:
-        description and example of return
-    
-    Raises:
-        IOError: ...
-    """
-
+IMAGE_WIDTH = 600
+IMAGE_HEIGHT = 400
+NUM_CLASS = 11
 
 
 def train():
@@ -36,12 +27,11 @@ def train():
     
     """
     # data pipline
-
+    inputs = create_dataset()
+    
     # build model
-    image = tf.placeholder(tf.float32, shape=[None, None, None, 3], name='image')
-    label = tf.placeholder(tf.int32, shape=[None, None, None, 1], name='label')
-
-    predict, logits = inference()
+    net = vgg16()
+    predict, logits = net...
 
 
     # define loss and optim
