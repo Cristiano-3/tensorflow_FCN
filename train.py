@@ -29,14 +29,26 @@ def train():
     # data pipline
     inputs = create_dataset()
     
-    # build model
+    # build model/construct graph
     net = vgg16()
-    predict, logits = net...
-
+    segmaps = net.create_architecture(inputs['images'], inputs['labels'], is_training=True)
 
     # define loss and optim
+    loss = net._losses['total_loss']
+    train_op = 
 
     # start a session and training
+    tfconfig = tf.ConfigProto(allow_soft_placement=True)
+    tfconfig.gpu_options.allow_growth = True
+    max_iters = 50000
+    with tf.Session(config=tfconfig) as sess:
+        # run the initializer
+        sess.run(tf.global_variables_initializer())
+
+        for epoch in range(1, epochs + 1)
+            sess.run(intpus['iterator_init_op'])
+            while True:
+            
     
 
 if __name__ == "__main__":

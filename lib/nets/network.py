@@ -41,19 +41,30 @@ class Network(object):
         return seg_maps
 
 
-    def _category_loss():
-        # sparse_softmax_cross_entropy_with_logits
-
+    def _category_loss(self):
+        # labels: Tensor of shape [d_0, d_1, ..., d_{r-1}], dtype=int32 or int64
+        # logits: Unscaled log probabilities of shape [d_0, d_1, ..., d_{r-1}, num_classes], dtype=float16, float32, float64
+        loss = tf.losses.sparse_softmax_cross_entropy(labels=labels, logits=predictions)
+        return loss
+        
     def _add_losses():
         # compute and add all losses
+        with tf.variable_scope('LOSS') as scope:
+            loss = self._category_loss()
+            regularization_loss = tf.add_n(tf.losses.get_regularization_losses(), 'regu')
+            self._losses['total_loss'] = loss + regularization_loss
 
-    def cretate_architecture(self, training):
-        self._image = tf.placeholder(tf.float32, shape=[None, IMAGE_HEIGHT, IMAGE_WIDTH, 3], name='image')
-        self._label = tf.placeholder(tf.int32, shape=[None, IMAGE_HEIGHT, IMAGE_WIDTH, 1], name='label')
+        return loss
 
-        seg_maps = self._build_network(training)
+    def cretate_architecture(self, images, labels, is_training):
+        self._image = images
+        self._label = labels
 
-    def train_step(self, sess, blobs, train_op):    
+        seg_maps = self._build_network(is_training)
+        return seg_maps
+        
+
+    def train_step(self, sess, blobs, train_op):
         
 
 """
